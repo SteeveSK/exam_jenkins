@@ -19,7 +19,7 @@ def commonEnv = [
     CI_CAST_IMAGE: 'steevesk/cast-service',
     CI_MOVIE_IMAGE: 'steevesk/movie-service',
     TAG_IMAGE_dev: 'dev',
-   // TAG_IMAGE_prod: 'prod',
+    TAG_IMAGE_prod: 'prod',
     DOCKER_HUB_USER: 'steevesk',
     GITHUB_USERNAME: 'steevesk1',
     GITHUB_URL: 'github.com/SteeveSK/exam_jenkins.git',
