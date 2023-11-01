@@ -1,0 +1,3 @@
+mount: prod
+castnodeport: 30003
+movienodeport: 30013

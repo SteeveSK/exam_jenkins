@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: movie-service
+  name: movie-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: movie-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: movie-service
+    spec:
+      containers:
+      - args:
+        - uvicorn
+        - app.main:app
+        - --reload
+        - --host
+        - 0.0.0.0
+        - --port
+        - "8000"
+        env:
+        - name: CAST_SERVICE_HOST_URL
+          value: http://cast_service:8000/api/v1/casts/
+        - name: DATABASE_URI
+          value: postgresql://movie_db_username:movie_db_password@movie_db/movie_db_dev
+        image: steevesk/movie-service:dev
+        imagePullPolicy: ""
+        name: movie-service
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - mountPath: /app/
+          name: movie-service-pv-{{ .Values.mount }}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: movie-service-pv-{{ .Values.mount }}
+        persistentVolumeClaim:
+          claimName: movie-service-pvc

@@ -1,0 +1,3 @@
+mount: staging
+castnodeport: 30002
+movienodeport: 30012

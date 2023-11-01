@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: cast-db
+  name: cast-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: cast-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: cast-db
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: cast_db_dev
+        - name: POSTGRES_PASSWORD
+          value: cast_db_password
+        - name: POSTGRES_USER
+          value: cast_db_username
+        image: postgres:12.1-alpine
+        imagePullPolicy: ""
+        name: cast-db
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/datacast
+          name: postgres-data-cast-pv-{{ .Values.mount }}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: postgres-data-cast-pv-{{ .Values.mount }}
+        persistentVolumeClaim:
+          claimName: postgres-data-cast-pvc

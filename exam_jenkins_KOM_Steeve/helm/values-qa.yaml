@@ -1,0 +1,3 @@
+mount: qa
+castnodeport: 30001
+movienodeport: 30011

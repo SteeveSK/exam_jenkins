@@ -1,0 +1,3 @@
+mount: dev
+castnodeport: 30000
+movienodeport: 30010
