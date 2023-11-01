@@ -64,7 +64,7 @@ pipeline {
             }
             steps {
                 script {
-                    // Build the CAST container  image
+                    // Build the CAST container image
                     sh "docker build -t $CI_CAST_IMAGE:$TAG_IMAGE_dev ./Jenkins_devops_exams/cast-service/"
                     // Tag the CAST container image from latest to the commit ref
                     sh "docker tag $CI_CAST_IMAGE:$TAG_IMAGE_dev $CI_CAST_IMAGE:$CI_COMMIT_SHORT_SHA"
