@@ -19,12 +19,12 @@ def commonEnv = [
     CI_CAST_IMAGE: 'steevesk/cast-service',
     CI_MOVIE_IMAGE: 'steevesk/movie-service',
     TAG_IMAGE_dev: 'dev',
-   // TAG_IMAGE_prod: 'prod',
+    TAG_IMAGE_prod: 'prod',
     DOCKER_HUB_USER: 'steevesk',
     GITHUB_USERNAME: 'steevesk1',
     GITHUB_URL: 'github.com/SteeveSK/exam_jenkins.git',
-    SSH_URL: 'git@github.com:SteeveSK/exam_jenkins.git'
-    CI_DOCKER_TOKEN: credentials("CI_DOCKER_TOKEN")
+    SSH_URL: 'git@github.com:SteeveSK/exam_jenkins.git',
+    DOCKER_TOKEN: credentials("CI_DOCKER_TOKEN")
 ]
 
 pipeline {
@@ -84,7 +84,7 @@ pipeline {
             steps {
                 script {
                     // Login to the Docker Hub Container registry
-                    sh "docker login -u $DOCKER_HUB_USER -p $CI_DOCKER_TOKEN"
+                    sh "docker login -u $DOCKER_HUB_USER -p $DOCKER_TOKEN"
 
                     // Push the CAST image
                     sh "docker push $CI_CAST_IMAGE:$CI_COMMIT_SHORT_SHA"
