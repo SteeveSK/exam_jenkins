@@ -107,7 +107,7 @@ pipeline {
     
         stage('merge_main_prod') {
                 steps {
-                // Navigate to the local main branch
+                // Navigate to the local  main branch
                 withCredentials([gitUsernamePassword(credentialsId: 'CI_GIT_TOKEN',
                  gitToolName: 'git-tool')]) {
                     sh 'git branch'
