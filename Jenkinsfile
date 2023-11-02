@@ -33,12 +33,6 @@ pipeline {
   
     agent any
 
- //   environment {
-   //     commonEnv.each { key, value ->
-     //       key key, value
-       // }
-   // }
-
     stages {
         stage('test') {
             steps {
@@ -60,7 +54,10 @@ pipeline {
                     sh "docker build -t $CI_CAST_IMAGE:$DOCKER_TAG ./Jenkins_devops_exams/cast-service/"
 
                     // Build the MOVIE container image
-                    sh "docker build -t $CI_MOVIE_IMAGE:$DOCKER_TAG ./Jenkins_devops_exams/movie-service/"            }
+                    sh "docker build -t $CI_MOVIE_IMAGE:$DOCKER_TAG ./Jenkins_devops_exams/movie-service/"            
+                }
+            }
+            
         }
 
         stage('push') {
@@ -71,14 +68,12 @@ pipeline {
 
                     // Push the CAST image
                     sh "docker push $CI_CAST_IMAGE:$DOCKER_TAG"
-                    }
 
                     // Push the MOVIE image
                     sh "docker push $CI_MOVIE_IMAGE:$DOCKER_TAG"
                     }
                 }
             }
-        }
 
         stage('deploy_dev') {
             steps {
