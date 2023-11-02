@@ -27,6 +27,7 @@ pipeline {
     GITHUB_URL = 'github.com/SteeveSK/exam_jenkins.git'
     SSH_URL = 'git@github.com:SteeveSK/exam_jenkins.git'
     DOCKER_TOKEN = credentials("CI_DOCKER_TOKEN")
+    GIT_TOKEN = credentials("CI_GIT_TOKEN") 
     }  
   
     agent any
@@ -39,10 +40,6 @@ pipeline {
 
     stages {
         stage('test') {
-            when {
-                branch 'dev'
-          //      expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
-            }
             steps {
                 sh '''
                 ls
@@ -56,9 +53,6 @@ pipeline {
         }
 
         stage('build') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
-            }
             steps {
                 script {
                     // Build the CAST container  image
@@ -75,9 +69,6 @@ pipeline {
         }
 
         stage('push') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
-            }
             steps {
                 script {
                     // Login to the Docker Hub Container registry
@@ -101,9 +92,6 @@ pipeline {
         }
 
         stage('deploy_dev') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
-            }
             steps {
                 script {
                     // Deploy to the 'dev' environment
@@ -119,9 +107,6 @@ pipeline {
         }
 
         stage('deploy_qa') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
-            }
             steps {
                 script {
                     // Deploy to the 'qa' environment
@@ -137,16 +122,13 @@ pipeline {
         }
 
         stage('merge_main_prod') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
-            }
             steps {
                 script {
                     // Merge 'dev' into 'main'
                     sh 'git branch'
                     sh 'git checkout main'
                     sh 'git merge origin/dev --allow-unrelated-histories'
-                    sh "git push https://$GITHUB_USERNAME:$CI_GIT_TOKEN@$GITHUB_URL main"
+                    sh "git push https://$GITHUB_USERNAME:$GIT_TOKEN@$GITHUB_URL main"
                 }
             }
         }
