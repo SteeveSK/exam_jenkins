@@ -117,7 +117,7 @@ pipeline {
             }
         }
 
-        stage('Deploiement en staging'){ // Deploy to the 'staging' environment
+        stage('Deploiement en staging'){  // Deploy to the 'staging' environment
             steps {
                 script {
                 sh '''
