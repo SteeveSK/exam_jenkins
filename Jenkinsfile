@@ -21,7 +21,6 @@ pipeline {
     CI_CAST_IMAGE = 'steevesk/cast-service'
     CI_MOVIE_IMAGE = 'steevesk/movie-service'
     TAG_IMAGE_dev = 'dev'
-    TAG_IMAGE_prod = 'prod'
     DOCKER_HUB_USER = 'steevesk'
     GITHUB_USERNAME = 'SteeveSK'
     GITHUB_URL = 'github.com/SteeveSK/exam_jenkins.git'
@@ -122,7 +121,7 @@ pipeline {
 
   stage('Deploiement en prod'){
             steps {
-            // Create an Approval Button with a timeout of 15minutes.
+            // Create an Approval Button with a timeout of  15minutes.
             // this require a manuel validation in order to deploy on production environment
                     timeout(time: 15, unit: "MINUTES") {
                         input message: 'Do you want to deploy in production ?', ok: 'Yes'
