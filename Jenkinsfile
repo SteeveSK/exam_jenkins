@@ -23,7 +23,7 @@ pipeline {
     TAG_IMAGE_dev = 'dev'
     TAG_IMAGE_prod = 'prod'
     DOCKER_HUB_USER = 'steevesk'
-    GITHUB_USERNAME = 'steevesk1'
+    GITHUB_USERNAME = 'SteeveSK'
     GITHUB_URL = 'github.com/SteeveSK/exam_jenkins.git'
     SSH_URL = 'git@github.com:SteeveSK/exam_jenkins.git'
     DOCKER_TOKEN = credentials("CI_DOCKER_TOKEN")
@@ -112,7 +112,7 @@ pipeline {
                     sh 'git branch'
                     sh 'git checkout main'
                     sh 'git merge origin/dev --allow-unrelated-histories'
-                    sh "git push origin main"
+                    sh "git push https://$GITHUB_USERNAME:$GIT_TOKEN@$GITHUB_URL main"
                 }
             }
         }
