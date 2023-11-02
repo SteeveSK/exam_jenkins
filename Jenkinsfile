@@ -108,11 +108,16 @@ pipeline {
         stage('merge_main_prod') {
             steps {
                 script {
-                    // Merge 'dev' into 'main'
-                    sh 'git branch'
-                    sh 'git checkout main'
-                    sh 'git merge origin/dev --allow-unrelated-histories'
-                    sh "git push https://$GITHUB_USERNAME:$GIT_TOKEN@$GITHUB_URL main"
+                    dir('https://github.com/SteeveSK/exam_jenkins.git') {
+                        // Configurez Git avec les informations d'authentification
+                        sh 'git config user.email "kom.steeve@gmail.com"'
+                        sh 'git config user.name "$GITHUB_USERNAME"'
+                        // Merge 'dev' into 'main'
+                        sh 'git branch'
+                        sh 'git checkout main'
+                        sh 'git merge origin/dev --allow-unrelated-histories'
+                        sh "git push origin main"
+                    }
                 }
             }
         }
