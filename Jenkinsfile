@@ -75,6 +75,21 @@ pipeline {
                 }
             }
 
+        stage('Deploiement en dev'){ // Deploy to the 'dev' environment
+            steps {
+                script {
+                sh '''
+                rm -Rf .kube
+                mkdir .kube
+                ls
+                cat $KUBECONFIG > .kube/config
+                helm upgrade --install helm exam_jenkins_KOM_Steeve/helm/ --values=exam_jenkins_KOM_Steeve/helm/values-dev.yaml -n dev
+                '''
+                }
+            }
+
+        }
+    
         stage('deploy_dev') {
             steps {
                 script {
