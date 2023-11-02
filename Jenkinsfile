@@ -40,7 +40,8 @@ pipeline {
     stages {
         stage('test') {
             when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
+                branch 'dev'
+          //      expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'dev' }
             }
             steps {
                 sh '''
