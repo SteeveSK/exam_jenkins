@@ -111,7 +111,7 @@ pipeline {
                     dir('https://github.com/SteeveSK/exam_jenkins.git') {
                         // Configurez Git avec les informations d'authentification
                         sh 'git config user.email "kom.steeve@gmail.com"'
-                        sh 'git config user.name "$GITHUB_USERNAME"'
+                        sh 'git config user.name "SteeveSK"'
                         // Merge 'dev' into 'main'
                         sh 'git branch'
                         sh 'git checkout main'
