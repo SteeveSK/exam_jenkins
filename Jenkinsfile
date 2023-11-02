@@ -28,6 +28,7 @@ pipeline {
     SSH_URL = 'git@github.com:SteeveSK/exam_jenkins.git'
     DOCKER_TOKEN = credentials("CI_DOCKER_TOKEN")
     GIT_TOKEN = credentials("CI_GIT_TOKEN") 
+    DOCKER_TAG = "v.${BUILD_ID}.0"
     }  
   
     agent any
@@ -56,16 +57,10 @@ pipeline {
             steps {
                 script {
                     // Build the CAST container  image
-                    sh "docker build -t $CI_CAST_IMAGE:$TAG_IMAGE_dev ./Jenkins_devops_exams/cast-service/"
-                    // Tag the CAST container image from latest to the commit ref
-                    sh "docker tag $CI_CAST_IMAGE:$TAG_IMAGE_dev $CI_CAST_IMAGE:$CI_COMMIT_SHORT_SHA"
+                    sh "docker build -t $CI_CAST_IMAGE:$DOCKER_TAG ./Jenkins_devops_exams/cast-service/"
 
                     // Build the MOVIE container image
-                    sh "docker build -t $CI_MOVIE_IMAGE:$TAG_IMAGE_dev ./Jenkins_devops_exams/movie-service/"
-                    // Tag the MOVIE container image from latest to the commit ref
-                    sh "docker tag $CI_MOVIE_IMAGE:$TAG_IMAGE_dev $CI_MOVIE_IMAGE:$CI_COMMIT_SHORT_SHA"
-                }
-            }
+                    sh "docker build -t $CI_MOVIE_IMAGE:$DOCKER_TAG ./Jenkins_devops_exams/movie-service/"            }
         }
 
         stage('push') {
@@ -75,17 +70,11 @@ pipeline {
                     sh "docker login -u $DOCKER_HUB_USER -p $DOCKER_TOKEN"
 
                     // Push the CAST image
-                    sh "docker push $CI_CAST_IMAGE:$CI_COMMIT_SHORT_SHA"
-                    // If we are building a tag, push the `latest` container image tag too
-                    if (currentBuild.rawBuild.buildVariables.get('CI_COMMIT_TAG')) {
-                        sh "docker push $CI_CAST_IMAGE:latest"
+                    sh "docker push $CI_CAST_IMAGE:$DOCKER_TAG"
                     }
 
                     // Push the MOVIE image
-                    sh "docker push $CI_MOVIE_IMAGE:$CI_COMMIT_SHORT_SHA"
-                    // If we are building a tag, push the `latest` container image tag too
-                    if (currentBuild.rawBuild.buildVariables.get('CI_COMMIT_TAG')) {
-                        sh "docker push $CI_MOVIE_IMAGE:latest"
+                    sh "docker push $CI_MOVIE_IMAGE:$DOCKER_TAG"
                     }
                 }
             }
