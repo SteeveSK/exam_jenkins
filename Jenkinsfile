@@ -112,7 +112,7 @@ pipeline {
                     sh 'git branch'
                     sh 'git checkout main'
                     sh 'git merge origin/dev --allow-unrelated-histories'
-                    sh "git push https://$GITHUB_USERNAME:$GIT_TOKEN@$GITHUB_URL main"
+                    sh "git push origin main"
                 }
             }
         }
