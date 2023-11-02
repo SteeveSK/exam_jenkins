@@ -104,28 +104,6 @@ pipeline {
             }
 
         }
-    
-        stage('merge_main_prod') {
-                steps {
-                // Navigate to the local main branch
-                withCredentials([gitUsernamePassword(credentialsId: 'CI_GIT_TOKEN',
-                 gitToolName: 'git-tool')]) {
-                    sh 'git branch'
-                    sh 'git checkout main'
-                    sh 'git merge origin/dev --allow-unrelated-histories'
-                    sh 'git push git@github.com:SteeveSK/exam_jenkins.git main'
-                }
-             //   script {
-                    // Configurez Git avec les informations  d'authentification
-               //     sh 'git config user.email "kom.steeve@gmail.com"'
-                 //   sh 'git config user.name "SteeveSK"'
-                   // sh 'git branch'
-                   // sh 'git checkout main'
-                   // sh 'git merge origin/dev --allow-unrelated-histories'
-                   // sh "git push origin main"
-               // }
-                }
-        }
 
         stage('Deploiement en staging'){ // Deploy to the 'staging' environment
             steps {
