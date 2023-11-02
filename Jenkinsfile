@@ -116,7 +116,7 @@ pipeline {
                     sh 'git push git@github.com:SteeveSK/exam_jenkins.git main'
                 }
              //   script {
-                    // Configurez Git avec les informations d'authentification
+                    // Configurez Git avec les informations  d'authentification
                //     sh 'git config user.email "kom.steeve@gmail.com"'
                  //   sh 'git config user.name "SteeveSK"'
                    // sh 'git branch'
