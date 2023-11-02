@@ -1,16 +1,4 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11-alpine'
-            args '-u root' // Add this line if you need root permissions
-        }
-    }
-
- //   environment {
-   //     commonEnv.each { key, value ->
-     //       key key, value
-       // }
-   // }
 
     environment { // Declaration of environment variables
     KUBE_NAMESPACE_dev = 'dev'
@@ -39,7 +27,15 @@ pipeline {
     GITHUB_URL = 'github.com/SteeveSK/exam_jenkins.git'
     SSH_URL = 'git@github.com:SteeveSK/exam_jenkins.git'
     DOCKER_TOKEN = credentials("CI_DOCKER_TOKEN")
-    }
+    }  
+  
+    agent any
+
+ //   environment {
+   //     commonEnv.each { key, value ->
+     //       key key, value
+       // }
+   // }
 
     stages {
         stage('test') {
