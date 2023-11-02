@@ -1,32 +1,3 @@
-def commonEnv = [
-    KUBE_NAMESPACE_dev: 'dev',
-    KUBE_NAMESPACE_qa: 'qa',
-    KUBE_NAMESPACE_staging: 'staging',
-    KUBE_NAMESPACE_prod: 'prod',
-    KUBECONFIG: credentials("KUBE_CONFIG") ,
-    IP_DEV: '34.240.50.23',
-    IP_QA: '34.240.50.23',
-    IP_STAGING: '34.240.50.23',
-    IP_PROD: '34.240.50.23',
-    NODEPORT_CAST_DEV: 30000,
-    NODEPORT_CAST_QA: 30001,
-    NODEPORT_CAST_STAGING: 30002,
-    NODEPORT_CAST_PROD: 30003,
-    NODEPORT_MOVIE_DEV: 30010,
-    NODEPORT_MOVIE_QA: 30011,
-    NODEPORT_MOVIE_STAGING: 30012,
-    NODEPORT_MOVIE_PROD: 30013,
-    CI_CAST_IMAGE: 'steevesk/cast-service',
-    CI_MOVIE_IMAGE: 'steevesk/movie-service',
-    TAG_IMAGE_dev: 'dev',
-    TAG_IMAGE_prod: 'prod',
-    DOCKER_HUB_USER: 'steevesk',
-    GITHUB_USERNAME: 'steevesk1',
-    GITHUB_URL: 'github.com/SteeveSK/exam_jenkins.git',
-    SSH_URL: 'git@github.com:SteeveSK/exam_jenkins.git',
-    DOCKER_TOKEN: credentials("CI_DOCKER_TOKEN")
-]
-
 pipeline {
     agent {
         docker {
@@ -35,10 +6,39 @@ pipeline {
         }
     }
 
-    environment {
-        commonEnv.each { key, value ->
-            key key, value
-        }
+ //   environment {
+   //     commonEnv.each { key, value ->
+     //       key key, value
+       // }
+   // }
+
+    environment { // Declaration of environment variables
+    KUBE_NAMESPACE_dev = 'dev'
+    KUBE_NAMESPACE_qa = 'qa'
+    KUBE_NAMESPACE_staging = 'staging'
+    KUBE_NAMESPACE_prod = 'prod'
+    KUBECONFIG = credentials("KUBE_CONFIG") 
+    IP_DEV = '34.240.50.23'
+    IP_QA = '34.240.50.23'
+    IP_STAGING = '34.240.50.23'
+    IP_PROD = '34.240.50.23'
+    NODEPORT_CAST_DEV = 30000
+    NODEPORT_CAST_QA = 30001
+    NODEPORT_CAST_STAGING = 30002
+    NODEPORT_CAST_PROD = 30003
+    NODEPORT_MOVIE_DEV = 30010
+    NODEPORT_MOVIE_QA = 30011
+    NODEPORT_MOVIE_STAGING = 30012
+    NODEPORT_MOVIE_PROD = 30013
+    CI_CAST_IMAGE = 'steevesk/cast-service'
+    CI_MOVIE_IMAGE = 'steevesk/movie-service'
+    TAG_IMAGE_dev = 'dev'
+    TAG_IMAGE_prod = 'prod'
+    DOCKER_HUB_USER = 'steevesk'
+    GITHUB_USERNAME = 'steevesk1'
+    GITHUB_URL = 'github.com/SteeveSK/exam_jenkins.git'
+    SSH_URL = 'git@github.com:SteeveSK/exam_jenkins.git'
+    DOCKER_TOKEN = credentials("CI_DOCKER_TOKEN")
     }
 
     stages {
@@ -189,4 +189,6 @@ pipeline {
                 }
             }
         }
+    }
+}
                
