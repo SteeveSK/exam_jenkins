@@ -113,7 +113,7 @@ pipeline {
                     sh 'git branch'
                     sh 'git checkout main'
                     sh 'git merge origin/dev --allow-unrelated-histories'
-                    sh 'git push https://github.com/SteeveSK/exam_jenkins.git main'
+                    sh 'git push git@github.com:SteeveSK/exam_jenkins.git main'
                 }
              //   script {
                     // Configurez Git avec les informations d'authentification
