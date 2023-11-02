@@ -89,37 +89,22 @@ pipeline {
             }
 
         }
+
+        stage('Deploiement en qa'){ // Deploy to the 'qa' environment
+            steps {
+                script {
+                sh '''
+                rm -Rf .kube
+                mkdir .kube
+                ls
+                cat $KUBECONFIG > .kube/config
+                helm upgrade --install helm exam_jenkins_KOM_Steeve/helm/ --values=exam_jenkins_KOM_Steeve/helm/values-qa.yaml -n qa
+                '''
+                }
+            }
+
+        }
     
-        stage('deploy_dev') {
-            steps {
-                script {
-                    // Deploy to the 'dev' environment
-                    withDockerServer([uri: 'tcp://docker:2375']) {
-                        sh 'docker info'
-                        sh 'rm -Rf .kube'
-                        sh 'mkdir .kube'
-                        sh 'cat $KUBECONFIG > .kube/config'
-                        sh 'helm upgrade --install helm exam_jenkins_KOM_Steeve/helm/ --values=exam_jenkins_KOM_Steeve/helm/values-dev.yaml -n dev'
-                    }
-                }
-            }
-        }
-
-        stage('deploy_qa') {
-            steps {
-                script {
-                    // Deploy to the 'qa' environment
-                    withDockerServer([uri: 'tcp://docker:2375']) {
-                        sh 'docker info'
-                        sh 'rm -Rf .kube'
-                        sh 'mkdir .kube'
-                        sh 'cat $KUBECONFIG > .kube/config'
-                        sh 'helm upgrade --install helm ./exam_jenkins_KOM_Steeve/helm/ --values=./exam_jenkins_KOM_Steeve/helm/values-qa.yaml -n qa'
-                    }
-                }
-            }
-        }
-
         stage('merge_main_prod') {
             steps {
                 script {
@@ -132,40 +117,40 @@ pipeline {
             }
         }
 
-        stage('deploy_staging') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'main' }
-            }
+        stage('Deploiement en staging'){ // Deploy to the 'staging' environment
             steps {
                 script {
-                    // Deploy to the 'staging' environment
-                    withDockerServer([uri: 'tcp://docker:2375']) {
-                        sh 'docker info'
-                        sh 'rm -Rf .kube'
-                        sh 'mkdir .kube'
-                        sh 'cat $KUBECONFIG > .kube/config'
-                        sh 'helm upgrade --install helm ./exam_jenkins_KOM_Steeve/helm/ --values=./exam_jenkins_KOM_Steeve/helm/values-staging.yaml -n staging'
-                    }
+                sh '''
+                rm -Rf .kube
+                mkdir .kube
+                ls
+                cat $KUBECONFIG > .kube/config
+                helm upgrade --install helm exam_jenkins_KOM_Steeve/helm/ --values=exam_jenkins_KOM_Steeve/helm/values-staging.yaml -n staging
+                '''
                 }
             }
+
         }
 
-        stage('deploy_prod') {
-            when {
-                expression { currentBuild.rawBuild.buildVariables.get('CI_COMMIT_REF_NAME') == 'main' }
-            }
+  stage('Deploiement en prod'){
             steps {
-                script {
-                    // Deploy to the 'prod' environment
-                    withDockerServer([uri: 'tcp://docker:2375']) {
-                        sh 'docker info'
-                        sh 'rm -Rf .kube'
-                        sh 'mkdir .kube'
-                        sh 'cat $KUBECONFIG > .kube/config'
-                        sh 'helm upgrade --install helm ./exam_jenkins_KOM_Steeve/helm/ --values=./exam_jenkins_KOM_Steeve/helm/values-prod.yaml -n prod'
+            // Create an Approval Button with a timeout of 15minutes.
+            // this require a manuel validation in order to deploy on production environment
+                    timeout(time: 15, unit: "MINUTES") {
+                        input message: 'Do you want to deploy in production ?', ok: 'Yes'
                     }
+
+                script {
+                sh '''
+                rm -Rf .kube
+                mkdir .kube
+                ls
+                cat $KUBECONFIG > .kube/config
+                helm upgrade --install helm ./exam_jenkins_KOM_Steeve/helm/ --values=./exam_jenkins_KOM_Steeve/helm/values-prod.yaml -n prod
+                '''
                 }
             }
+
         }
     }
 }
