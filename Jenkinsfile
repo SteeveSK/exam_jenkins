@@ -48,7 +48,7 @@ pipeline {
                 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
                 chmod 700 get_helm.sh
                 ./get_helm.sh
-                helm lint ./exam_gitlab_KOM_Steeve/helm
+                helm lint ./exam_jenkins_KOM_Steeve/helm
                 rm -rf ./get_helm.sh
                 '''
             }
