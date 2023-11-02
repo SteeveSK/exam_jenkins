@@ -112,7 +112,7 @@ pipeline {
                  gitToolName: 'git-tool')]) {
                     sh 'git branch'
                     sh 'git checkout main'
-                    sh 'git merge dev'
+                    sh 'git merge origin/dev --allow-unrelated-histories'
                     sh 'git push https://github.com/SteeveSK/exam_jenkins.git main'
                 }
              //   script {
